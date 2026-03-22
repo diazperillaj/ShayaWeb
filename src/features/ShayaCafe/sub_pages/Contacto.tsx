@@ -147,10 +147,8 @@ const Contacto: FC = () => {
             marginBottom: 12,
           }}
         >
-          <ContactCard href="https://wa.me/573001234567"       icon={<IconWA />}   dot="#25D366"     label="WhatsApp"           value="+57 300 123 4567" />
-          <ContactCard href="mailto:info@shayacafe.co"         icon={<IconMail />} dot="#C07B52"     label="Correo electrónico" value="info@shayacafe.co" />
-          <ContactCard href="https://instagram.com/shayacafe" icon={<IconIG />}   dot="linear-gradient(135deg,#f58529,#dd2a7b,#8134af)" label="Instagram" value="@shayacafe" />
-          <ContactCard href="https://facebook.com/shayacafe"  icon={<IconFB />}   dot="#1877F2"     label="Facebook"           value="Shaya Café" />
+          <ContactCard href="https://wa.me/573138237896"       icon={<IconWA />}   dot="#25D366"     label="WhatsApp"           value="+57 313 823 7896" />
+          <ContactCard href="mailto:shayacafe@gmail.com"         icon={<IconMail />} dot="#C07B52"     label="Correo electrónico" value="shayacafe@gmail.com" />
         </div>
 
         {/* TikTok centrado */}
@@ -159,7 +157,7 @@ const Contacto: FC = () => {
             className="contact-tiktok-wrap"
             style={{ width: isMobile ? "100%" : "calc(50% - 6px)" }}
           >
-            <ContactCard href="https://tiktok.com/@shayacafe" icon={<IconTK />} dot="#010101" label="TikTok" value="@shayacafe" />
+          <ContactCard href="https://instagram.com/shaya_cafe" icon={<IconIG />}   dot="linear-gradient(135deg,#f58529,#dd2a7b,#8134af)" label="Instagram" value="@shaya_cafe" />
           </div>
         </div>
 

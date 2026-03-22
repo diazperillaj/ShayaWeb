@@ -26,7 +26,7 @@ const ProductCard: FC<{ product: Product }> = ({ product }) => {
       }}
     >
       {/* Imagen con swap al hover */}
-      <div style={{ position: "relative", height: 250, overflow: "hidden" }}>
+      <div style={{ position: "relative", height: 450, overflow: "hidden" }}>
         {([product.imgA, product.imgB] as string[]).map((src, i) => (
           <img
             key={i}

@@ -41,7 +41,7 @@ const Nosotros: FC = () => {
         <div className="about-photo-col" style={{ flex: "0 0 44%", position: "relative" }}>
           <div style={{ borderRadius: 20, overflow: "hidden" }}>
             <img
-              src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=900&q=80"
+              src="/Microcentral/process.jpg"
               alt="Proceso artesanal Shaya Café"
               style={{
                 width: "100%", height: 460,
@@ -125,7 +125,7 @@ const Nosotros: FC = () => {
               lineHeight: 1.88, color: "#6B3F22", marginBottom: 44,
             }}
           >
-            Seleccionamos granos de las mejores regiones cafeteras del país,
+            Seleccionamos granos en una de las mejores regiones cafeteras del país,
             con tostión artesanal que respeta el perfil único de cada variedad.
             Cada grano tiene una historia — nosotros te la contamos en cada sorbo.
           </p>
@@ -133,7 +133,7 @@ const Nosotros: FC = () => {
           {/* Stats */}
           <div className="about-stats" style={{ display: "flex", gap: 44 }}>
             {[
-              ["5+",   "Años de exp."],
+              ["4+",   "Años de exp."],
               ["100%", "Café de origen"],
               ["3",    "Presentaciones"],
             ].map(([n, l]) => (
