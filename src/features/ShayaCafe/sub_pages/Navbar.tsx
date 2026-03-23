@@ -14,7 +14,15 @@ interface NavbarProps {
 
 // ── Shopping bag icon ──────────────────────────────────────────────
 const BagIcon = ({ className = "" }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
     <line x1="3" y1="6" x2="21" y2="6" />
     <path d="M16 10a4 4 0 01-8 0" />
@@ -40,11 +48,10 @@ const Navbar: FC<NavbarProps> = ({
       } ${
         transparent
           ? "bg-transparent border-b border-transparent backdrop-blur-none"
-          : "bg-[#F9F5EF]/96 border-b border-[#E8DDD0] backdrop-blur-xl"
+          : "bg-[#F9F5EF]/[0.96] border-b border-[#E8DDD0] backdrop-blur-xl"
       }`}
     >
       <div className="max-w-[1160px] mx-auto h-16 flex items-center justify-between">
-
         {/* ── Logo ── */}
         <button
           onClick={() => onNavigate("inicio")}
@@ -76,7 +83,6 @@ const Navbar: FC<NavbarProps> = ({
 
         {/* ── Right actions ── */}
         <div className="flex items-center gap-3">
-
           {/* CTA — desktop only */}
           <button
             onClick={() => onNavigate("contacto")}
@@ -119,7 +125,10 @@ const Navbar: FC<NavbarProps> = ({
             aria-label="Menú"
             className="flex md:hidden bg-transparent border-0 cursor-pointer relative z-[501] p-1"
           >
-            <Hamburger open={menuOpen} color={transparent ? "#fff" : "#271409"} />
+            <Hamburger
+              open={menuOpen}
+              color={transparent ? "#fff" : "#271409"}
+            />
           </button>
         </div>
       </div>
