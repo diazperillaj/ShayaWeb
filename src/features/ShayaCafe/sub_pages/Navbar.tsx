@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import type { NavItem } from "../types";
 import Hamburger from "./MenuMobil";
+import { useCart } from "../context/CartContext";
 
 interface NavbarProps {
   navShow: boolean;
@@ -11,6 +12,16 @@ interface NavbarProps {
   onToggleMenu: () => void;
 }
 
+// ── Shopping bag icon ──────────────────────────────────────────────
+const BagIcon = ({ className = "" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <path d="M16 10a4 4 0 01-8 0" />
+  </svg>
+);
+
+// ── Navbar ─────────────────────────────────────────────────────────
 const Navbar: FC<NavbarProps> = ({
   navShow,
   atTop,
@@ -20,63 +31,97 @@ const Navbar: FC<NavbarProps> = ({
   onToggleMenu,
 }) => {
   const transparent = atTop && !menuOpen;
+  const { totalCount, openCart } = useCart();
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-[500] px-5"
-      style={{
-        background: transparent ? "transparent" : "rgba(249,245,239,.96)",
-        backdropFilter: transparent ? "none" : "blur(20px)",
-        borderBottom: transparent ? "1px solid transparent" : "1px solid #E8DDD0",
-        transform: navShow ? "translateY(0)" : "translateY(-100%)",
-        transition: "transform .45s cubic-bezier(.16,1,.3,1), background .4s, border-color .4s",
-      }}
+      className={`fixed inset-x-0 top-0 z-[500] px-5 transition-[transform,background-color,border-color] duration-[450ms] ease-[cubic-bezier(.16,1,.3,1)] ${
+        navShow ? "translate-y-0" : "-translate-y-full"
+      } ${
+        transparent
+          ? "bg-transparent border-b border-transparent backdrop-blur-none"
+          : "bg-[#F9F5EF]/96 border-b border-[#E8DDD0] backdrop-blur-xl"
+      }`}
     >
       <div className="max-w-[1160px] mx-auto h-16 flex items-center justify-between">
 
-        {/* ── Marca ── */}
+        {/* ── Logo ── */}
         <button
           onClick={() => onNavigate("inicio")}
-          className="bg-transparent border-none cursor-pointer flex items-center gap-[10px] relative z-[501]"
+          className="bg-transparent border-0 cursor-pointer flex items-center gap-2.5 relative z-[501]"
         >
           <span
-            className="font-display text-[20px] font-bold transition-colors duration-[400ms]"
-            style={{ color: transparent ? "#fff" : "#271409" }}
+            className={`font-display text-xl font-bold transition-colors duration-[400ms] ${
+              transparent ? "text-white" : "text-[#271409]"
+            }`}
           >
             SHAYA <span className="text-[#C07B52]">CAFÉ</span>
           </span>
         </button>
 
-        {/* ── Links desktop ── */}
+        {/* ── Desktop nav links ── */}
         <nav className="hidden md:flex gap-8">
           {navItems.map(({ label, id }) => (
             <span
               key={id}
               onClick={() => onNavigate(id)}
-              className="nav-link-underline relative font-sans text-[.78rem] font-semibold tracking-[.13em] uppercase cursor-pointer pb-[3px] transition-colors duration-300"
-              style={{ color: atTop ? "rgba(255,255,255,.82)" : "#271409" }}
+              className={`nav-link-underline relative font-sans text-[.78rem] font-semibold tracking-[.13em] uppercase cursor-pointer pb-[3px] transition-colors duration-300 ${
+                atTop ? "text-white/82" : "text-[#271409]"
+              }`}
             >
               {label}
             </span>
           ))}
         </nav>
 
-        {/* ── CTA desktop ── */}
-        <button
-          onClick={() => onNavigate("contacto")}
-          className="hidden md:block font-sans text-[12px] font-bold tracking-[.1em] uppercase text-white bg-[#C07B52] border-none rounded-full px-6 py-[10px] cursor-pointer transition-colors duration-300 hover:bg-[#271409]"
-        >
-          Contáctanos
-        </button>
+        {/* ── Right actions ── */}
+        <div className="flex items-center gap-3">
 
-        {/* ── Hamburger mobile ── */}
-        <button
-          onClick={onToggleMenu}
-          aria-label="Menú"
-          className="flex md:hidden bg-transparent border-none cursor-pointer relative z-[501] p-1"
-        >
-          <Hamburger open={menuOpen} color={transparent ? "#fff" : "#271409"} />
-        </button>
+          {/* CTA — desktop only */}
+          <button
+            onClick={() => onNavigate("contacto")}
+            className="hidden md:block font-sans text-xs font-bold tracking-[.1em] uppercase text-white bg-[#C07B52] hover:bg-[#271409] border-0 rounded-full px-6 py-2.5 cursor-pointer transition-colors duration-300"
+          >
+            Contáctanos
+          </button>
+
+          {/* ── Cart button ── */}
+          <button
+            onClick={openCart}
+            aria-label={`Carrito${totalCount > 0 ? `, ${totalCount} productos` : ""}`}
+            className={`relative flex items-center justify-center w-10 h-10 rounded-full border-0 cursor-pointer transition-colors duration-300 z-[501] ${
+              transparent
+                ? "bg-white/15 hover:bg-white/25"
+                : "bg-[#EDE7DE] hover:bg-[#E0D6CA]"
+            }`}
+          >
+            <BagIcon
+              className={`w-[18px] h-[18px] transition-colors duration-300 ${
+                transparent ? "text-white" : "text-[#271409]"
+              }`}
+            />
+
+            {/* Badge */}
+            {totalCount > 0 && (
+              <span
+                className={`absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full flex items-center justify-center font-sans text-[10px] font-bold text-white px-1 bg-[#C07B52] animate-[cartPop_.3s_cubic-bezier(.34,1.56,.64,1)] ${
+                  transparent ? "shadow-none" : "ring-2 ring-[#F9F5EF]"
+                }`}
+              >
+                {totalCount > 99 ? "99+" : totalCount}
+              </span>
+            )}
+          </button>
+
+          {/* ── Hamburger — mobile only ── */}
+          <button
+            onClick={onToggleMenu}
+            aria-label="Menú"
+            className="flex md:hidden bg-transparent border-0 cursor-pointer relative z-[501] p-1"
+          >
+            <Hamburger open={menuOpen} color={transparent ? "#fff" : "#271409"} />
+          </button>
+        </div>
       </div>
     </header>
   );

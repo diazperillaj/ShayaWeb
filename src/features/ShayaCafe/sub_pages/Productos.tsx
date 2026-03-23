@@ -3,52 +3,74 @@ import type { FC } from "react";
 import type { Product } from "../types";
 import { PRODUCTS } from "../constants";
 import { useReveal, useIsMobile } from "../hooks";
+import { useCart } from "../context/CartContext";
 
-// ── Tarjeta individual de producto ────────────────────────────────
+// ── Icons ──────────────────────────────────────────────────────────
+const BagIcon = ({ className = "" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <path d="M16 10a4 4 0 01-8 0" />
+  </svg>
+);
+
+const CheckIcon = ({ className = "" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+// ── ProductCard ────────────────────────────────────────────────────
 const ProductCard: FC<{ product: Product }> = ({ product }) => {
   const [hovered, setHovered] = useState(false);
+  const [added, setAdded] = useState(false);
+  const { addItem } = useCart();
+
+  const handleAdd = () => {
+    addItem(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1400);
+  };
 
   return (
     <article
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="rounded-[18px] overflow-hidden bg-white border border-[#E8DDD0] cursor-pointer transition-[box-shadow,transform] duration-[400ms] ease-[ease]"
-      style={{
-        boxShadow: hovered
-          ? "0 18px 50px rgba(39,20,9,.12)"
-          : "0 2px 14px rgba(39,20,9,.05)",
-        transform: hovered ? "translateY(-7px)" : "translateY(0)",
-      }}
+      className={`rounded-[18px] overflow-hidden bg-white border border-[#E8DDD0] cursor-pointer transition-[box-shadow,transform] duration-[400ms] ${
+        hovered
+          ? "shadow-[0_18px_50px_rgba(39,20,9,.12)] -translate-y-[7px]"
+          : "shadow-[0_2px_14px_rgba(39,20,9,.05)] translate-y-0"
+      }`}
     >
-      {/* Imagen con swap al hover */}
+      {/* ── Image swap on hover ── */}
       <div className="relative h-[450px] overflow-hidden">
         {([product.imgA, product.imgB] as string[]).map((src, i) => (
           <img
             key={i}
             src={src}
             alt={product.name}
-            className="absolute inset-0 w-full h-full object-cover transition-[opacity,transform] duration-[650ms] ease-[ease]"
-            style={{
-              opacity: (i === 0 ? !hovered : hovered) ? 1 : 0,
-              transform: (i === 0 ? !hovered : hovered) ? "scale(1)" : "scale(1.07)",
-            }}
+            className={`absolute inset-0 w-full h-full object-cover transition-[opacity,transform] duration-[650ms] ${
+              (i === 0 ? !hovered : hovered)
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-[1.07]"
+            }`}
           />
         ))}
 
         {/* Badge */}
-        <span className="absolute top-[14px] left-[14px] bg-[#C07B52] text-white text-[10px] font-bold tracking-[.14em] uppercase px-3 py-1 rounded-full font-sans">
+        <span className="absolute top-3.5 left-3.5 bg-[#C07B52] text-white text-[10px] font-bold tracking-[.14em] uppercase px-3 py-1 rounded-full font-sans">
           {product.badge}
         </span>
 
-        {/* Peso */}
-        <span className="absolute top-[14px] right-[14px] bg-[rgba(249,245,239,.92)] text-[#5A8270] text-[11px] font-bold tracking-[.08em] px-[10px] py-1 rounded-full font-sans backdrop-blur-[4px]">
+        {/* Weight */}
+        <span className="absolute top-3.5 right-3.5 bg-[#F9F5EF]/92 text-[#5A8270] text-[11px] font-bold tracking-[.08em] px-2.5 py-1 rounded-full font-sans backdrop-blur-[4px]">
           {product.weight}
         </span>
       </div>
 
-      {/* Cuerpo */}
+      {/* ── Body ── */}
       <div className="px-6 pt-[22px] pb-[26px]">
-        <p className="font-sans text-[10.5px] font-bold tracking-[.2em] uppercase text-[#5A8270] mb-[6px]">
+        <p className="font-sans text-[10.5px] font-bold tracking-[.2em] uppercase text-[#5A8270] mb-1.5">
           {product.tagline}
         </p>
 
@@ -60,11 +82,30 @@ const ProductCard: FC<{ product: Product }> = ({ product }) => {
           <span className="font-display text-[27px] font-bold text-[#C07B52]">
             {product.price}
           </span>
+
+          {/* Add to cart button */}
           <button
-            className="font-sans text-[12.5px] font-semibold tracking-[.05em] text-white border-none rounded-full px-[22px] py-[10px] cursor-pointer transition-colors duration-300 ease-[ease]"
-            style={{ background: hovered ? "#271409" : "#C07B52" }}
+            onClick={handleAdd}
+            aria-label={`Agregar ${product.name} al carrito`}
+            className={`flex items-center gap-1.5 font-sans text-[12.5px] font-semibold tracking-[.05em] text-white border-0 rounded-full px-[22px] py-2.5 cursor-pointer transition-all duration-300 min-w-[130px] justify-center ${
+              added
+                ? "bg-[#5A8270]"
+                : hovered
+                ? "bg-[#271409]"
+                : "bg-[#C07B52]"
+            }`}
           >
-            Pedir ahora
+            {added ? (
+              <>
+                <CheckIcon className="w-3 h-3" />
+                Agregado
+              </>
+            ) : (
+              <>
+                <BagIcon className="w-3 h-3" />
+                Agregar
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -85,13 +126,13 @@ const Productos: FC = () => {
     >
       <div
         ref={ref}
-        className={`transition-[opacity,transform] duration-[900ms] ease-[ease] max-w-[1080px] mx-auto ${
+        className={`max-w-[1080px] mx-auto transition-[opacity,transform] duration-[900ms] ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
       >
-        {/* Encabezado */}
+        {/* ── Header ── */}
         <div className="text-center mb-[52px]">
-          <p className="font-sans text-[10.5px] font-bold tracking-[.3em] uppercase text-[#5A8270] mb-[10px]">
+          <p className="font-sans text-[10.5px] font-bold tracking-[.3em] uppercase text-[#5A8270] mb-2.5">
             Nuestros productos
           </p>
           <h2
@@ -101,18 +142,15 @@ const Productos: FC = () => {
             Café que{" "}
             <em className="italic text-[#C07B52]">se siente</em>
           </h2>
-          <div
-            className="w-11 h-[2px] rounded-full mx-auto mt-4"
-            style={{ background: "linear-gradient(90deg,#C07B52,#5A8270)" }}
-          />
+          <div className="w-11 h-0.5 rounded-full mx-auto mt-4 bg-gradient-to-r from-[#C07B52] to-[#5A8270]" />
         </div>
 
-        {/* Fila 1 — productos 1 y 2 */}
+        {/* ── Row 1: products 1 & 2 ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-[26px] mb-5 md:mb-[26px]">
           {PRODUCTS.slice(0, 2).map((p, i) => (
             <div
               key={p.id}
-              className="transition-[opacity,transform] duration-[900ms] ease-[ease]"
+              className="transition-[opacity,transform] duration-[900ms]"
               style={{
                 transitionDelay: i === 0 ? ".06s" : ".20s",
                 opacity: visible ? 1 : 0,
@@ -124,10 +162,10 @@ const Productos: FC = () => {
           ))}
         </div>
 
-        {/* Fila 2 — producto 3 centrado debajo */}
+        {/* ── Row 2: product 3 centered ── */}
         <div className="flex justify-center">
           <div
-            className="w-full md:w-[calc(50%-13px)] transition-[opacity,transform] duration-[900ms] ease-[ease]"
+            className="w-full md:w-[calc(50%-13px)] transition-[opacity,transform] duration-[900ms]"
             style={{
               transitionDelay: ".34s",
               opacity: visible ? 1 : 0,
