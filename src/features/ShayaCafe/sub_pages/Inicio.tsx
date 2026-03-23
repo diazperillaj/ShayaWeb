@@ -5,162 +5,60 @@ interface InicioProps {
 }
 
 const Inicio: FC<InicioProps> = ({ onNavigate }) => (
-  <section
-    id="inicio"
-    style={{
-      position: "relative",
-      width: "100%",
-      height: "100vh",
-      overflow: "hidden",
-    }}
-  >
+  <section id="inicio" className="relative w-full h-screen overflow-hidden">
+
     {/* ── Foto fondo a pantalla completa ── */}
     <img
       src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1800&q=85"
       alt="Café Shaya portada"
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-        objectPosition: "center 55%",
-      }}
+      className="absolute inset-0 w-full h-full object-cover object-[center_55%]"
     />
 
     {/* ── Overlay suave ── */}
     <div
+      className="absolute inset-0"
       style={{
-        position: "absolute",
-        inset: 0,
         background:
           "linear-gradient(160deg,rgba(15,8,3,.40) 0%,rgba(15,8,3,.25) 45%,rgba(15,8,3,.55) 100%)",
       }}
     />
 
-    {/* ── Contenido centrado sobre la foto ── */}
-    <div
-      style={{
-        position: "relative",
-        zIndex: 2,
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        padding: "0 20px",
-      }}
-    >
+    {/* ── Contenido centrado ── */}
+    <div className="relative z-[2] h-full flex flex-col items-center justify-center text-center px-5">
+
       {/* Eyebrow */}
-      <p
-        className="a1 hero-eyebrow"
-        style={{
-          fontFamily: "var(--sans)",
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: ".32em",
-          textTransform: "uppercase",
-          color: "#E8C49A",
-          marginBottom: 18,
-        }}
-      >
+      <p className="animate-fade-up-1 font-sans text-[11px] md:text-[9px] font-semibold tracking-[.32em] md:tracking-[.22em] uppercase text-[#E8C49A] mb-[18px]">
         &nbsp;Café de origen colombiano
       </p>
 
       {/* Título */}
       <h1
-        className="a2"
-        style={{
-          fontFamily: "var(--display)",
-          fontSize: "clamp(2.4rem, 6.5vw, 6rem)",
-          fontWeight: 700,
-          lineHeight: 1.06,
-          color: "#FEFCF9",
-          marginBottom: 20,
-          letterSpacing: "-.015em",
-          maxWidth: 760,
-        }}
+        className="animate-fade-up-2 font-display font-bold leading-[1.06] text-[#FEFCF9] mb-5 tracking-[-0.015em] max-w-[760px]"
+        style={{ fontSize: "clamp(2.4rem, 6.5vw, 6rem)" }}
       >
         El alma del{" "}
-        <em style={{ fontStyle: "italic", color: "#E8C49A" }}>buen café</em>
+        <em className="italic text-[#E8C49A]">buen café</em>
         <br />en cada sorbo
       </h1>
 
       {/* Subtítulo */}
-      <p
-        className="a3 hero-sub"
-        style={{
-          fontFamily: "var(--sans)",
-          fontSize: 16,
-          lineHeight: 1.85,
-          color: "rgba(254,252,249,.66)",
-          maxWidth: 460,
-          marginBottom: 44,
-        }}
-      >
+      <p className="animate-fade-up-3 font-sans text-base md:text-[14px] leading-[1.85] text-[rgba(254,252,249,.66)] max-w-[460px] mb-11 md:mb-8">
         Seleccionamos los mejores granos de las montañas colombianas
         para llevarte una experiencia cafetera auténtica y memorable.
       </p>
 
       {/* Botones */}
-      <div
-        className="a4 hero-btns"
-        style={{
-          display: "flex",
-          gap: 14,
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
+      <div className="animate-fade-up-4 flex gap-[14px] flex-wrap justify-center md:flex-col md:w-full md:max-w-[280px]">
         <button
           onClick={() => onNavigate("productos")}
-          style={{
-            fontFamily: "var(--sans)",
-            fontSize: 13.5,
-            fontWeight: 600,
-            color: "#fff",
-            background: "#C07B52",
-            border: "none",
-            borderRadius: 99,
-            padding: "14px 34px",
-            cursor: "pointer",
-            boxShadow: "0 8px 28px rgba(192,123,82,.45)",
-            transition: "transform .25s, background .3s",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.transform = "scale(1.04)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.transform = "scale(1)")
-          }
+          className="font-sans text-[13.5px] font-semibold text-white bg-[#C07B52] border-none rounded-full px-[34px] py-[14px] cursor-pointer shadow-[0_8px_28px_rgba(192,123,82,.45)] transition-transform duration-[250ms] hover:scale-[1.04] md:w-full"
         >
           Ver productos →
         </button>
 
         <button
           onClick={() => onNavigate("nosotros")}
-          style={{
-            fontFamily: "var(--sans)",
-            fontSize: 13.5,
-            fontWeight: 500,
-            color: "rgba(254,252,249,.88)",
-            background: "rgba(254,252,249,.10)",
-            border: "1.5px solid rgba(254,252,249,.32)",
-            borderRadius: 99,
-            padding: "14px 34px",
-            cursor: "pointer",
-            backdropFilter: "blur(6px)",
-            transition: "background .3s, border-color .3s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(254,252,249,.18)";
-            e.currentTarget.style.borderColor = "rgba(254,252,249,.55)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "rgba(254,252,249,.10)";
-            e.currentTarget.style.borderColor = "rgba(254,252,249,.32)";
-          }}
+          className="font-sans text-[13.5px] font-medium text-[rgba(254,252,249,.88)] bg-[rgba(254,252,249,.10)] border-[1.5px] border-[rgba(254,252,249,.32)] rounded-full px-[34px] py-[14px] cursor-pointer backdrop-blur-[6px] transition-all duration-300 hover:bg-[rgba(254,252,249,.18)] hover:border-[rgba(254,252,249,.55)] md:w-full"
         >
           Nuestra historia
         </button>
@@ -169,29 +67,10 @@ const Inicio: FC<InicioProps> = ({ onNavigate }) => (
 
     {/* ── Flecha scroll ── */}
     <div
-      className="arr"
+      className="animate-bounce-arr absolute bottom-[30px] left-1/2 flex flex-col items-center gap-[5px] cursor-pointer"
       onClick={() => onNavigate("productos")}
-      style={{
-        position: "absolute",
-        bottom: 30,
-        left: "50%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 5,
-        cursor: "pointer",
-      }}
     >
-      <span
-        style={{
-          fontFamily: "var(--sans)",
-          fontSize: 9,
-          fontWeight: 700,
-          letterSpacing: ".28em",
-          textTransform: "uppercase",
-          color: "rgba(254,252,249,.38)",
-        }}
-      >
+      <span className="font-sans text-[9px] font-bold tracking-[.28em] uppercase text-[rgba(254,252,249,.38)]">
         scroll
       </span>
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">

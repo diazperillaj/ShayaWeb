@@ -8,151 +8,83 @@ const Nosotros: FC = () => {
   return (
     <section
       id="nosotros"
-      style={{
-        background: "#F0E9DC",
-        padding: isMobile ? "72px 16px" : "100px 24px",
-        overflow: "hidden",
-        position: "relative",
-      }}
+      className="relative overflow-hidden bg-[#F0E9DC]"
+      style={{ padding: isMobile ? "72px 16px" : "100px 24px" }}
     >
       {/* Blob decorativo */}
-      <div
-        style={{
-          position: "absolute", right: -130, bottom: -130,
-          width: 500, height: 500, borderRadius: "50%",
-          background: "rgba(90,130,112,.07)", pointerEvents: "none",
-        }}
-      />
+      <div className="pointer-events-none absolute -bottom-32 -right-32 h-[500px] w-[500px] rounded-full bg-[rgba(90,130,112,0.07)]" />
 
       <div
         ref={ref}
-        className={`rev about-inner ${visible ? "on" : "off"}`}
-        style={{
-          maxWidth: 1080,
-          margin: "0 auto",
-          display: "flex",
-          alignItems: "center",
-          gap: 72,
-          position: "relative",
-          zIndex: 1,
-        }}
+        className={`rev about-inner relative z-10 mx-auto flex max-w-[1080px] items-center gap-[72px] ${
+          visible ? "on" : "off"
+        } ${isMobile ? "flex-col" : ""}`}
       >
         {/* ── Foto ── */}
-        <div className="about-photo-col" style={{ flex: "0 0 44%", position: "relative" }}>
-          <div style={{ borderRadius: 20, overflow: "hidden" }}>
+        <div className="about-photo-col relative shrink-0 basis-[44%]">
+          <div className="overflow-hidden rounded-[20px]">
             <img
               src="/Microcentral/process.jpg"
               alt="Proceso artesanal Shaya Café"
-              style={{
-                width: "100%", height: 460,
-                objectFit: "cover", display: "block",
-              }}
+              className="block h-[460px] w-full object-cover"
             />
           </div>
 
           {/* Badge flotante */}
-          <div
-            className="about-badge"
-            style={{
-              position: "absolute", bottom: -20, right: -20,
-              background: "#C07B52", borderRadius: 16,
-              padding: "18px 24px",
-              boxShadow: "0 12px 38px rgba(192,123,82,.28)",
-            }}
-          >
-            <p
-              style={{
-                fontFamily: "var(--display)", fontSize: 34,
-                fontWeight: 700, color: "#fff", lineHeight: 1,
-              }}
-            >
+          <div className="about-badge absolute -bottom-5 -right-5 rounded-2xl bg-[#C07B52] px-6 py-[18px] shadow-[0_12px_38px_rgba(192,123,82,0.28)]">
+            <p className="font-[var(--display)] text-[34px] font-bold leading-none text-white">
               100%
             </p>
-            <p
-              style={{
-                fontFamily: "var(--sans)", fontSize: 10.5, fontWeight: 700,
-                letterSpacing: ".15em", textTransform: "uppercase",
-                color: "rgba(255,255,255,.8)", marginTop: 4,
-              }}
-            >
+            <p className="mt-1 font-[var(--sans)] text-[10.5px] font-bold uppercase tracking-[0.15em] text-white/80">
               Origen colombiano
             </p>
           </div>
         </div>
 
         {/* ── Texto ── */}
-        <div style={{ flex: 1 }}>
-          <p
-            style={{
-              fontFamily: "var(--sans)", fontSize: 10.5, fontWeight: 700,
-              letterSpacing: ".3em", textTransform: "uppercase",
-              color: "#5A8270", marginBottom: 14,
-            }}
-          >
+        <div className="flex-1">
+          <p className="mb-[14px] font-[var(--sans)] text-[10.5px] font-bold uppercase tracking-[0.3em] text-[#5A8270]">
             ✦ Quiénes somos
           </p>
 
           <h2
-            style={{
-              fontFamily: "var(--display)",
-              fontSize: "clamp(1.8rem, 2.8vw, 2.7rem)",
-              fontWeight: 700, color: "#271409",
-              lineHeight: 1.15, marginBottom: 22,
-            }}
+            className="mb-[22px] font-[var(--display)] font-bold leading-[1.15] text-[#271409]"
+            style={{ fontSize: "clamp(1.8rem, 2.8vw, 2.7rem)" }}
           >
-            Pasión por el café,<br />
-            <em style={{ fontStyle: "italic", color: "#C07B52" }}>
-              desde las montañas
-            </em>
-            <br />hasta tu taza
+            Pasión por el café,
+            <br />
+            <em className="italic text-[#C07B52]">desde las montañas</em>
+            <br />
+            hasta tu taza
           </h2>
 
-          <p
-            style={{
-              fontFamily: "var(--sans)", fontSize: 15,
-              lineHeight: 1.88, color: "#6B3F22", marginBottom: 16,
-            }}
-          >
-            En <strong style={{ color: "#271409" }}>Shaya Café</strong> creemos
-            que una buena taza de café va más allá del sabor: es un ritual, un
-            momento de pausa, una conexión con la tierra colombiana que lo hace
-            posible.
+          <p className="mb-4 font-[var(--sans)] text-[15px] leading-[1.88] text-[#6B3F22]">
+            En{" "}
+            <strong className="text-[#271409]">Shaya Café</strong>{" "}
+            creemos que una buena taza de café va más allá del sabor: es un
+            ritual, un momento de pausa, una conexión con la tierra colombiana
+            que lo hace posible.
           </p>
 
-          <p
-            style={{
-              fontFamily: "var(--sans)", fontSize: 15,
-              lineHeight: 1.88, color: "#6B3F22", marginBottom: 44,
-            }}
-          >
-            Seleccionamos granos en una de las mejores regiones cafeteras del país,
-            con tostión artesanal que respeta el perfil único de cada variedad.
-            Cada grano tiene una historia — nosotros te la contamos en cada sorbo.
+          <p className="mb-11 font-[var(--sans)] text-[15px] leading-[1.88] text-[#6B3F22]">
+            Seleccionamos granos en una de las mejores regiones cafeteras del
+            país, con tostión artesanal que respeta el perfil único de cada
+            variedad. Cada grano tiene una historia — nosotros te la contamos
+            en cada sorbo.
           </p>
 
           {/* Stats */}
-          <div className="about-stats" style={{ display: "flex", gap: 44 }}>
+          <div className="about-stats flex gap-11">
             {[
-              ["4+",   "Años de exp."],
+              ["4+", "Años de exp."],
               ["100%", "Café de origen"],
-              ["3",    "Presentaciones"],
+              ["3", "Presentaciones"],
             ].map(([n, l]) => (
               <div key={l}>
-                <p
-                  style={{
-                    fontFamily: "var(--display)", fontSize: 32,
-                    fontWeight: 700, color: "#C07B52",
-                  }}
-                >
+                <p className="font-[var(--display)] text-[32px] font-bold text-[#C07B52]">
                   {n}
                 </p>
-                <p
-                  style={{
-                    fontFamily: "var(--sans)", fontSize: 11,
-                    fontWeight: 600, color: "#B0A090",
-                    letterSpacing: ".06em", marginTop: 2,
-                  }}
-                >
+                <p className="mt-0.5 font-[var(--sans)] text-[11px] font-semibold uppercase tracking-[0.06em] text-[#B0A090]">
                   {l}
                 </p>
               </div>

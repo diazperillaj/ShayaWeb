@@ -36,40 +36,29 @@ const ContactCard: FC<ContactCardProps> = ({ href, icon, dot, label, value }) =>
       href={href}
       target="_blank"
       rel="noreferrer"
-      style={{ textDecoration: "none" }}
+      className="no-underline block"
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
     >
       <div
+        className="flex items-center gap-[14px] px-[18px] py-[15px] rounded-[13px] transition-all duration-300"
         style={{
-          display: "flex", alignItems: "center", gap: 14,
-          padding: "15px 18px", borderRadius: 13,
           background: hov ? "#fff" : "transparent",
           border: `1px solid ${hov ? "#D9C9B0" : "#E8DDD0"}`,
           transform: hov ? "translateX(4px)" : "translateX(0)",
-          transition: "all .3s ease",
         }}
       >
         <div
-          style={{
-            width: 40, height: 40, borderRadius: 10,
-            background: dot, color: "#fff", flexShrink: 0,
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}
+          className="w-10 h-10 rounded-[10px] text-white flex-shrink-0 flex items-center justify-center"
+          style={{ background: dot }}
         >
           {icon}
         </div>
         <div>
-          <p
-            style={{
-              fontFamily: "var(--sans)", fontSize: 10, fontWeight: 700,
-              letterSpacing: ".2em", textTransform: "uppercase",
-              color: "#B0A090", marginBottom: 2,
-            }}
-          >
+          <p className="font-sans text-[10px] font-bold tracking-[.2em] uppercase text-[#B0A090] mb-[2px]">
             {label}
           </p>
-          <p style={{ fontFamily: "var(--sans)", fontSize: 14.5, fontWeight: 500, color: "#271409" }}>
+          <p className="font-sans text-[14.5px] font-medium text-[#271409]">
             {value}
           </p>
         </div>
@@ -86,87 +75,61 @@ const Contacto: FC = () => {
   return (
     <section
       id="contacto"
-      style={{
-        background: "#F9F5EF",
-        padding: isMobile ? "72px 16px 60px" : "96px 24px 80px",
-      }}
+      className="bg-[#F9F5EF]"
+      style={{ padding: isMobile ? "72px 16px 60px" : "96px 24px 80px" }}
     >
       <div
         ref={ref}
-        className={`rev ${visible ? "on" : "off"}`}
-        style={{ maxWidth: 820, margin: "0 auto" }}
+        className={`max-w-[820px] mx-auto transition-[opacity,transform] duration-[900ms] ease-[ease] ${
+          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
       >
         {/* Encabezado */}
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <p
-            style={{
-              fontFamily: "var(--sans)", fontSize: 10.5, fontWeight: 600,
-              letterSpacing: ".3em", textTransform: "uppercase",
-              color: "#6B3F22", marginBottom: 10,
-            }}
-          >
+        <div className="text-center mb-12">
+          <p className="font-sans text-[10.5px] font-semibold tracking-[.3em] uppercase text-[#6B3F22] mb-[10px]">
             ✦ Hablemos
           </p>
           <h2
-            style={{
-              fontFamily: "var(--display)",
-              fontSize: "clamp(1.9rem, 3.8vw, 3rem)",
-              fontWeight: 700, color: "#271409", lineHeight: 1.1,
-            }}
+            className="font-display font-bold text-[#271409] leading-[1.1]"
+            style={{ fontSize: "clamp(1.9rem, 3.8vw, 3rem)" }}
           >
             Encuéntranos{" "}
-            <em style={{ fontStyle: "italic", color: "#C07B52" }}>donde estés</em>
+            <em className="italic text-[#C07B52]">donde estés</em>
           </h2>
-          <p
-            style={{
-              fontFamily: "var(--sans)", fontSize: 15, color: "#6B3F22",
-              lineHeight: 1.75, maxWidth: 380, margin: "14px auto 0",
-            }}
-          >
+          <p className="font-sans text-[15px] text-[#6B3F22] leading-[1.75] max-w-[380px] mx-auto mt-[14px]">
             Escríbenos o síguenos en redes. Estamos listos para atenderte.
           </p>
         </div>
 
-        {/* Grid 2 × 2 */}
-        <div
-          className="contact-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 12,
-            marginBottom: 12,
-          }}
-        >
-          <ContactCard href="https://wa.me/573138237896"       icon={<IconWA />}   dot="#25D366"     label="WhatsApp"           value="+57 313 823 7896" />
-          <ContactCard href="mailto:shayacafe@gmail.com"         icon={<IconMail />} dot="#C07B52"     label="Correo electrónico" value="shayacafe@gmail.com" />
+        {/* Grid 2 × 1 en mobile, 2 × 2 en desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] md:gap-3 mb-[10px] md:mb-3">
+          <ContactCard href="https://wa.me/573138237896"   icon={<IconWA />}   dot="#25D366"     label="WhatsApp"           value="+57 313 823 7896" />
+          <ContactCard href="mailto:shayacafe@gmail.com"   icon={<IconMail />} dot="#C07B52"     label="Correo electrónico" value="shayacafe@gmail.com" />
         </div>
 
-        {/* TikTok centrado */}
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <div
-            className="contact-tiktok-wrap"
-            style={{ width: isMobile ? "100%" : "calc(50% - 6px)" }}
-          >
-          <ContactCard href="https://instagram.com/shaya_cafe" icon={<IconIG />}   dot="linear-gradient(135deg,#f58529,#dd2a7b,#8134af)" label="Instagram" value="@shaya_cafe" />
+        {/* Instagram centrado */}
+        <div className="flex justify-center">
+          <div className="w-full md:w-[calc(50%-6px)]">
+            <ContactCard
+              href="https://instagram.com/shaya_cafe"
+              icon={<IconIG />}
+              dot="linear-gradient(135deg,#f58529,#dd2a7b,#8134af)"
+              label="Instagram"
+              value="@shaya_cafe"
+            />
           </div>
         </div>
 
         {/* Divisor */}
-        <div style={{ height: 1, background: "#E8DDD0", margin: "44px 0 24px" }} />
+        <div className="h-px bg-[#E8DDD0] my-11" />
 
         {/* Footer */}
-        <div
-          className="contact-footer"
-          style={{
-            display: "flex", alignItems: "center",
-            justifyContent: "space-between", flexWrap: "wrap", gap: 10,
-          }}
-        >
-          <span style={{ fontFamily: "var(--display)", fontSize: 20, fontWeight: 700, color: "#271409" }}>
-            Shaya <span style={{ color: "#C07B52" }}>Café</span>
+        <div className="flex items-center justify-between flex-wrap gap-[10px] md:flex-col md:items-start md:gap-[6px]">
+          <span className="font-display text-[20px] font-bold text-[#271409]">
+            Shaya <span className="text-[#C07B52]">Café</span>
           </span>
-          <span style={{ fontFamily: "var(--sans)", fontSize: 12.5, color: "#B0A090" }}>
-            © 2026 Shaya Café · Hecho con en Colombia
+          <span className="font-sans text-[12.5px] text-[#B0A090]">
+            © 2026 Shaya Café · Hecho con ♥ en Colombia
           </span>
         </div>
       </div>

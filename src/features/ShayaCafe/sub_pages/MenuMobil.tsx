@@ -45,28 +45,29 @@ interface MenuMobilProps {
 }
 
 export const MenuMobil: FC<MenuMobilProps> = ({ open, navItems, onNavigate }) => (
-  <div className={`mobile-menu ${open ? "open" : "closed"}`}>
+  <div
+    className={`
+      fixed inset-0 z-[400] bg-[#F9F5EF]
+      flex flex-col items-center justify-center gap-2
+      transition-[opacity,transform] duration-[350ms] ease-[ease]
+      ${open
+        ? "opacity-100 translate-y-0 pointer-events-auto"
+        : "opacity-0 -translate-y-3 pointer-events-none"
+      }
+    `}
+  >
     {navItems.map(({ label, id }) => (
-      <span key={id} className="mob-link" onClick={() => onNavigate(id)}>
+      <span
+        key={id}
+        onClick={() => onNavigate(id)}
+        className="font-display text-[2rem] font-bold text-[#271409] cursor-pointer py-3 tracking-[-0.01em] transition-colors duration-[250ms] hover:text-[#C07B52]"
+      >
         {label}
       </span>
     ))}
     <button
       onClick={() => onNavigate("contacto")}
-      style={{
-        marginTop: 16,
-        fontFamily: "var(--sans)",
-        fontSize: 13,
-        fontWeight: 700,
-        letterSpacing: ".1em",
-        textTransform: "uppercase",
-        color: "#fff",
-        background: "#C07B52",
-        border: "none",
-        borderRadius: 99,
-        padding: "13px 36px",
-        cursor: "pointer",
-      }}
+      className="mt-4 font-sans text-[13px] font-bold tracking-[.1em] uppercase text-white bg-[#C07B52] border-none rounded-full px-9 py-[13px] cursor-pointer"
     >
       Contáctanos
     </button>

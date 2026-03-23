@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 
-import GlobalStyles          from "./GlobalStyles";
 import Navbar                from "./sub_pages/Navbar";
 import { MenuMobil }         from "./sub_pages/MenuMobil";
 import Inicio                from "./sub_pages/Inicio";
@@ -46,8 +45,6 @@ export default function ShayaCafe() {
 
   return (
     <>
-      {/* Estilos globales y fuentes */}
-      <GlobalStyles />
 
       {/* Navbar fijo con lógica hide/show */}
       <Navbar

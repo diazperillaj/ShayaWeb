@@ -12,108 +12,57 @@ const ProductCard: FC<{ product: Product }> = ({ product }) => {
     <article
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      className="rounded-[18px] overflow-hidden bg-white border border-[#E8DDD0] cursor-pointer transition-[box-shadow,transform] duration-[400ms] ease-[ease]"
       style={{
-        borderRadius: 18,
-        overflow: "hidden",
-        background: "#FFFFFF",
-        border: "1px solid #E8DDD0",
         boxShadow: hovered
           ? "0 18px 50px rgba(39,20,9,.12)"
           : "0 2px 14px rgba(39,20,9,.05)",
         transform: hovered ? "translateY(-7px)" : "translateY(0)",
-        transition: "box-shadow .4s ease, transform .4s ease",
-        cursor: "pointer",
       }}
     >
       {/* Imagen con swap al hover */}
-      <div style={{ position: "relative", height: 450, overflow: "hidden" }}>
+      <div className="relative h-[450px] overflow-hidden">
         {([product.imgA, product.imgB] as string[]).map((src, i) => (
           <img
             key={i}
             src={src}
             alt={product.name}
+            className="absolute inset-0 w-full h-full object-cover transition-[opacity,transform] duration-[650ms] ease-[ease]"
             style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
               opacity: (i === 0 ? !hovered : hovered) ? 1 : 0,
-              transform: (i === 0 ? !hovered : hovered)
-                ? "scale(1)"
-                : "scale(1.07)",
-              transition: "opacity .65s ease, transform .65s ease",
+              transform: (i === 0 ? !hovered : hovered) ? "scale(1)" : "scale(1.07)",
             }}
           />
         ))}
 
         {/* Badge */}
-        <span
-          style={{
-            position: "absolute", top: 14, left: 14,
-            background: "#C07B52", color: "#fff",
-            fontSize: 10, fontWeight: 700,
-            letterSpacing: ".14em", textTransform: "uppercase",
-            padding: "4px 12px", borderRadius: 99,
-            fontFamily: "var(--sans)",
-          }}
-        >
+        <span className="absolute top-[14px] left-[14px] bg-[#C07B52] text-white text-[10px] font-bold tracking-[.14em] uppercase px-3 py-1 rounded-full font-sans">
           {product.badge}
         </span>
 
         {/* Peso */}
-        <span
-          style={{
-            position: "absolute", top: 14, right: 14,
-            background: "rgba(249,245,239,.92)", color: "#5A8270",
-            fontSize: 11, fontWeight: 700, letterSpacing: ".08em",
-            padding: "4px 10px", borderRadius: 99,
-            fontFamily: "var(--sans)", backdropFilter: "blur(4px)",
-          }}
-        >
+        <span className="absolute top-[14px] right-[14px] bg-[rgba(249,245,239,.92)] text-[#5A8270] text-[11px] font-bold tracking-[.08em] px-[10px] py-1 rounded-full font-sans backdrop-blur-[4px]">
           {product.weight}
         </span>
       </div>
 
       {/* Cuerpo */}
-      <div style={{ padding: "22px 24px 26px" }}>
-        <p
-          style={{
-            fontFamily: "var(--sans)", fontSize: 10.5, fontWeight: 700,
-            letterSpacing: ".2em", textTransform: "uppercase",
-            color: "#5A8270", marginBottom: 6,
-          }}
-        >
+      <div className="px-6 pt-[22px] pb-[26px]">
+        <p className="font-sans text-[10.5px] font-bold tracking-[.2em] uppercase text-[#5A8270] mb-[6px]">
           {product.tagline}
         </p>
 
-        <h3
-          style={{
-            fontFamily: "var(--display)", fontSize: 23, fontWeight: 700,
-            color: "#271409", marginBottom: 18,
-          }}
-        >
+        <h3 className="font-display text-[23px] font-bold text-[#271409] mb-[18px]">
           {product.name}
         </h3>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span
-            style={{
-              fontFamily: "var(--display)", fontSize: 27,
-              fontWeight: 700, color: "#C07B52",
-            }}
-          >
+        <div className="flex items-center justify-between">
+          <span className="font-display text-[27px] font-bold text-[#C07B52]">
             {product.price}
           </span>
           <button
-            style={{
-              fontFamily: "var(--sans)", fontSize: 12.5, fontWeight: 600,
-              letterSpacing: ".05em", color: "#fff",
-              background: hovered ? "#271409" : "#C07B52",
-              border: "none", borderRadius: 99,
-              padding: "10px 22px", cursor: "pointer",
-              transition: "background .3s ease",
-            }}
+            className="font-sans text-[12.5px] font-semibold tracking-[.05em] text-white border-none rounded-full px-[22px] py-[10px] cursor-pointer transition-colors duration-300 ease-[ease]"
+            style={{ background: hovered ? "#271409" : "#C07B52" }}
           >
             Pedir ahora
           </button>
@@ -131,60 +80,44 @@ const Productos: FC = () => {
   return (
     <section
       id="productos"
-      style={{
-        background: "#F9F5EF",
-        padding: isMobile ? "72px 16px 88px" : "96px 24px 112px",
-      }}
+      className="bg-[#F9F5EF]"
+      style={{ padding: isMobile ? "72px 16px 88px" : "96px 24px 112px" }}
     >
       <div
         ref={ref}
-        className={`rev ${visible ? "on" : "off"}`}
-        style={{ maxWidth: 1080, margin: "0 auto" }}
+        className={`transition-[opacity,transform] duration-[900ms] ease-[ease] max-w-[1080px] mx-auto ${
+          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
       >
         {/* Encabezado */}
-        <div style={{ textAlign: "center", marginBottom: 52 }}>
-          <p
-            style={{
-              fontFamily: "var(--sans)", fontSize: 10.5, fontWeight: 700,
-              letterSpacing: ".3em", textTransform: "uppercase",
-              color: "#5A8270", marginBottom: 10,
-            }}
-          >
+        <div className="text-center mb-[52px]">
+          <p className="font-sans text-[10.5px] font-bold tracking-[.3em] uppercase text-[#5A8270] mb-[10px]">
             Nuestros productos
           </p>
           <h2
-            style={{
-              fontFamily: "var(--display)",
-              fontSize: "clamp(1.9rem, 3.8vw, 3rem)",
-              fontWeight: 700, color: "#271409", lineHeight: 1.1,
-            }}
+            className="font-display font-bold text-[#271409] leading-[1.1]"
+            style={{ fontSize: "clamp(1.9rem, 3.8vw, 3rem)" }}
           >
             Café que{" "}
-            <em style={{ fontStyle: "italic", color: "#C07B52" }}>se siente</em>
+            <em className="italic text-[#C07B52]">se siente</em>
           </h2>
           <div
-            style={{
-              width: 44, height: 2,
-              background: "linear-gradient(90deg,#C07B52,#5A8270)",
-              borderRadius: 99, margin: "16px auto 0",
-            }}
+            className="w-11 h-[2px] rounded-full mx-auto mt-4"
+            style={{ background: "linear-gradient(90deg,#C07B52,#5A8270)" }}
           />
         </div>
 
         {/* Fila 1 — productos 1 y 2 */}
-        <div
-          className="products-row1"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 26,
-            marginBottom: 26,
-          }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-[26px] mb-5 md:mb-[26px]">
           {PRODUCTS.slice(0, 2).map((p, i) => (
             <div
               key={p.id}
-              className={`rev ${visible ? "on" : "off"} d${i + 1}`}
+              className="transition-[opacity,transform] duration-[900ms] ease-[ease]"
+              style={{
+                transitionDelay: i === 0 ? ".06s" : ".20s",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(32px)",
+              }}
             >
               <ProductCard product={p} />
             </div>
@@ -192,10 +125,14 @@ const Productos: FC = () => {
         </div>
 
         {/* Fila 2 — producto 3 centrado debajo */}
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="flex justify-center">
           <div
-            className={`rev ${visible ? "on" : "off"} d3 products-row2-wrap`}
-            style={{ width: isMobile ? "100%" : "calc(50% - 13px)" }}
+            className="w-full md:w-[calc(50%-13px)] transition-[opacity,transform] duration-[900ms] ease-[ease]"
+            style={{
+              transitionDelay: ".34s",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(32px)",
+            }}
           >
             <ProductCard product={PRODUCTS[2]} />
           </div>

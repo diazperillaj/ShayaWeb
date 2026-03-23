@@ -1,3 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Único bloque que Tailwind no puede expresar: pseudo-elemento con transición */
+@layer components {
+  .nav-link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 1.5px;
+    width: 0;
+    background: #C07B52;
+    transition: width .35s cubic-bezier(.4, 0, .2, 1);
+  }
+  .nav-link-underline:hover::after {
+    width: 100%;
+  }
+}

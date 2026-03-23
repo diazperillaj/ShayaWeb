@@ -23,69 +23,38 @@ const Navbar: FC<NavbarProps> = ({
 
   return (
     <header
+      className="fixed inset-x-0 top-0 z-[500] px-5"
       style={{
-        position: "fixed",
-        inset: "0 0 auto",
-        zIndex: 500,
-        padding: "0 20px",
         background: transparent ? "transparent" : "rgba(249,245,239,.96)",
         backdropFilter: transparent ? "none" : "blur(20px)",
-        borderBottom: transparent
-          ? "1px solid transparent"
-          : "1px solid #E8DDD0",
+        borderBottom: transparent ? "1px solid transparent" : "1px solid #E8DDD0",
         transform: navShow ? "translateY(0)" : "translateY(-100%)",
-        transition:
-          "transform .45s cubic-bezier(.16,1,.3,1), background .4s, border-color .4s",
+        transition: "transform .45s cubic-bezier(.16,1,.3,1), background .4s, border-color .4s",
       }}
     >
-      <div
-        style={{
-          maxWidth: 1160,
-          margin: "0 auto",
-          height: 64,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="max-w-[1160px] mx-auto h-16 flex items-center justify-between">
+
         {/* ── Marca ── */}
         <button
           onClick={() => onNavigate("inicio")}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            position: "relative",
-            zIndex: 501,
-          }}
+          className="bg-transparent border-none cursor-pointer flex items-center gap-[10px] relative z-[501]"
         >
-          
           <span
-            style={{
-              fontFamily: "var(--display)",
-              fontSize: 20,
-              fontWeight: 700,
-              color: transparent ? "#fff" : "#271409",
-              transition: "color .4s",
-            }}
+            className="font-display text-[20px] font-bold transition-colors duration-[400ms]"
+            style={{ color: transparent ? "#fff" : "#271409" }}
           >
-            SHAYA <span style={{ color: "#C07B52" }}>CAFÉ</span>
+            SHAYA <span className="text-[#C07B52]">CAFÉ</span>
           </span>
         </button>
 
         {/* ── Links desktop ── */}
-        <nav className="nav-desktop-links" style={{ display: "flex", gap: 32 }}>
+        <nav className="hidden md:flex gap-8">
           {navItems.map(({ label, id }) => (
             <span
               key={id}
-              className="nl"
               onClick={() => onNavigate(id)}
-              style={{
-                color: atTop ? "rgba(255,255,255,.82)" : "#271409",
-              }}
+              className="nav-link-underline relative font-sans text-[.78rem] font-semibold tracking-[.13em] uppercase cursor-pointer pb-[3px] transition-colors duration-300"
+              style={{ color: atTop ? "rgba(255,255,255,.82)" : "#271409" }}
             >
               {label}
             </span>
@@ -94,42 +63,17 @@ const Navbar: FC<NavbarProps> = ({
 
         {/* ── CTA desktop ── */}
         <button
-          className="nav-desktop-cta"
           onClick={() => onNavigate("contacto")}
-          style={{
-            fontFamily: "var(--sans)",
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: ".1em",
-            textTransform: "uppercase",
-            color: "#fff",
-            background: "#C07B52",
-            border: "none",
-            borderRadius: 99,
-            padding: "10px 24px",
-            cursor: "pointer",
-            transition: "background .3s",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#271409")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#C07B52")}
+          className="hidden md:block font-sans text-[12px] font-bold tracking-[.1em] uppercase text-white bg-[#C07B52] border-none rounded-full px-6 py-[10px] cursor-pointer transition-colors duration-300 hover:bg-[#271409]"
         >
           Contáctanos
         </button>
 
         {/* ── Hamburger mobile ── */}
         <button
-          className="nav-hamburger"
           onClick={onToggleMenu}
           aria-label="Menú"
-          style={{
-            display: "none", // overridden by media query
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            position: "relative",
-            zIndex: 501,
-            padding: 4,
-          }}
+          className="flex md:hidden bg-transparent border-none cursor-pointer relative z-[501] p-1"
         >
           <Hamburger open={menuOpen} color={transparent ? "#fff" : "#271409"} />
         </button>
