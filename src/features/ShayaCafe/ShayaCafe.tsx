@@ -6,7 +6,7 @@ import Inicio           from "./sub_pages/Inicio";
 import Productos        from "./sub_pages/Productos";
 import Nosotros         from "./sub_pages/Nosotros";
 import Contacto         from "./sub_pages/Contacto";
-import CartModal        from "./sub_pages/Cartmodal";       // ← nuevo
+import CartModal        from "./sub_pages/CartModal";       // ← nuevo
 import { CartProvider } from "./context/CartContext";       // ← nuevo
 import { NAV_ITEMS }    from "./constants";
 
