@@ -23,8 +23,8 @@ export const PRODUCTS: Product[] = [
     price: "$40.000",
     weight: "500 g",
     badge: "Más vendido",
-    imgA: "/Products/ground_front.png",
-    imgB: "/Products/ground_back.png",
+    imgA: "/Products/ground_front2.png",
+    imgB: "/Products/ground_back2.png",
   },
   {
     id: 2,
@@ -33,8 +33,8 @@ export const PRODUCTS: Product[] = [
     price: "$40.000",
     weight: "500 g",
     badge: "Premium",
-    imgA: "/Products/grain_front.png",
-    imgB: "/Products/grain_lateral.png",
+    imgA: "/Products/grain_front2.png",
+    imgB: "/Products/grain_lateral2.png",
   },
   {
     id: 3,

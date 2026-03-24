@@ -57,12 +57,16 @@ const Navbar: FC<NavbarProps> = ({
           onClick={() => onNavigate("inicio")}
           className="bg-transparent border-0 cursor-pointer flex items-center gap-2.5 relative z-[501]"
         >
+          <img
+            src="/logo_sin_fondo.ico"
+            alt="Shaya Café"
+            className={`h-10 sm:h-8 md:h-12 w-auto object-contain transition-all duration-[400ms] `}
+          />
           <span
-            className={`font-display text-xl font-bold transition-colors duration-[400ms] ${
-              transparent ? "text-white" : "text-[#271409]"
+            className={`text-[#402d0f] font-display italic text-2xl font-semibold transition-colors duration-[400ms] "
             }`}
           >
-            SHAYA <span className="text-[#C07B52]">CAFÉ</span>
+            Shaya <span className="text-[#f3990d]">Café</span>
           </span>
         </button>
 

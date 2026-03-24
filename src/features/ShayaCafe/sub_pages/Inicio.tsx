@@ -6,12 +6,17 @@ interface InicioProps {
 
 const Inicio: FC<InicioProps> = ({ onNavigate }) => (
   <section id="inicio" className="relative w-full h-screen overflow-hidden">
-
     {/* ── Foto fondo a pantalla completa ── */}
     <img
-      src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1800&q=85"
+      src="/font.png"
       alt="Café Shaya portada"
       className="absolute inset-0 w-full h-full object-cover object-[center_55%]"
+    />
+    <img
+      src="/logo_sin_fondo.ico"
+      alt="Café Shaya portada"
+      style={{ perspective: "600px" }}
+      className="hidden sm:block animate-logo-entrada absolute left-1/2 top-[6%] sm:top-[8.5%] w-[18%] sm:w-[12%] md:w-[8%] lg:w-[5%] xl:w-[4%] h-auto object-contain"
     />
 
     {/* ── Overlay suave ── */}
@@ -25,26 +30,26 @@ const Inicio: FC<InicioProps> = ({ onNavigate }) => (
 
     {/* ── Contenido centrado ── */}
     <div className="relative z-[2] h-full flex flex-col items-center justify-center text-center px-5">
-
       {/* Eyebrow */}
       <p className="animate-fade-up-1 font-sans text-[11px] md:text-[9px] font-semibold tracking-[.32em] md:tracking-[.22em] uppercase text-[#E8C49A] mb-[18px]">
-        &nbsp;Café de origen colombiano
+        &nbsp;Boyacá · Mujeres productoras
       </p>
 
       {/* Título */}
       <h1
-        className="animate-fade-up-2 font-display font-bold leading-[1.06] text-[#FEFCF9] mb-5 tracking-[-0.015em] max-w-[760px]"
-        style={{ fontSize: "clamp(2.4rem, 6.5vw, 6rem)" }}
+        className="animate-fade-up-2 font-display font-bold leading-[1.06] text-[#FEFCF9] mb-5 tracking-[-0.015em] max-w-[1060px]"
+        style={{ fontSize: "clamp(2.4rem, 5vw, 5rem)" }}
       >
-        El alma del{" "}
-        <em className="italic text-[#E8C49A]">buen café</em>
-        <br />en cada sorbo
+        No es café <br />
+        <em className="italic text-[#E8C49A]">comercial.</em>
+        <br />
+        Es café con origen real
       </h1>
 
       {/* Subtítulo */}
-      <p className="animate-fade-up-3 font-sans text-base md:text-[14px] leading-[1.85] text-[rgba(254,252,249,.66)] max-w-[460px] mb-11 md:mb-8">
-        Seleccionamos los mejores granos de las montañas colombianas
-        para llevarte una experiencia cafetera auténtica y memorable.
+      <p className="animate-fade-up-3 font-sans text-base md:text-[14px] leading-[1.85] text-[rgba(254,252,249,.66)] max-w-[660px] mb-11 md:mb-8">
+        Cultivado y procesado por mujeres que combinan conocimiento ancestral con un proceso cuidado. Notas dulces a panela, un toque cítrico y una
+        taza limpia que puedes notar desde el primer sorbo.
       </p>
 
       {/* Botones */}

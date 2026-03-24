@@ -1,9 +1,40 @@
 import type { FC } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useReveal, useIsMobile } from "../hooks";
+
+const FOTOS = [
+  "/Nosotros/foto1.jpg",
+  "/Nosotros/foto2.png",
+  "/Nosotros/foto3.jpg",
+  "/Nosotros/foto4.png",
+  "/Nosotros/foto5.png",
+];
 
 const Nosotros: FC = () => {
   const { ref, visible } = useReveal();
   const isMobile = useIsMobile();
+  const [current, setCurrent] = useState(0);
+  const [animating, setAnimating] = useState(false);
+
+  const goTo = useCallback((index: number) => {
+    if (animating) return;
+    setAnimating(true);
+    setTimeout(() => {
+      setCurrent(index);
+      setAnimating(false);
+    }, 300);
+  }, [animating]);
+
+  const prev = () => goTo(current === 0 ? FOTOS.length - 1 : current - 1);
+  const next = () => goTo(current === FOTOS.length - 1 ? 0 : current + 1);
+
+  // Auto-avance cada 4s
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((c) => (c === FOTOS.length - 1 ? 0 : c + 1));
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section
@@ -22,12 +53,47 @@ const Nosotros: FC = () => {
       >
         {/* ── Foto ── */}
         <div className="about-photo-col relative shrink-0 basis-[44%]">
-          <div className="overflow-hidden rounded-[20px]">
+          <div className="relative overflow-hidden rounded-[20px]">
+            {/* Imagen con fade */}
             <img
-              src="/Microcentral/process.jpg"
-              alt="Proceso artesanal Shaya Café"
-              className="block h-[460px] w-full object-cover"
+              src={FOTOS[current]}
+              alt={`Proceso artesanal Shaya Café ${current + 1}`}
+              className="block h-[460px] w-full object-cover transition-opacity duration-300"
+              style={{ opacity: animating ? 0 : 1 }}
             />
+
+            {/* Flechas */}
+            <button
+              onClick={prev}
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-all hover:bg-black/50"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M10 3L5 8l5 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-all hover:bg-black/50"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M6 3l5 5-5 5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+
+            {/* Dots */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-[6px]">
+              {FOTOS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  className="h-[6px] rounded-full transition-all duration-300"
+                  style={{
+                    width: i === current ? "20px" : "6px",
+                    background: i === current ? "#fff" : "rgba(255,255,255,0.45)",
+                  }}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Badge flotante */}
@@ -51,26 +117,20 @@ const Nosotros: FC = () => {
             className="mb-[22px] font-[var(--display)] font-bold leading-[1.15] text-[#271409]"
             style={{ fontSize: "clamp(1.8rem, 2.8vw, 2.7rem)" }}
           >
-            Pasión por el café,
+            Café con origen real,
             <br />
-            <em className="italic text-[#C07B52]">desde las montañas</em>
-            <br />
-            hasta tu taza
+            <em className="italic text-[#C07B52]">hecho por mujeres en Boyacá</em>
           </h2>
 
           <p className="mb-4 font-[var(--sans)] text-[15px] leading-[1.88] text-[#6B3F22]">
-            En{" "}
-            <strong className="text-[#271409]">Shaya Café</strong>{" "}
-            creemos que una buena taza de café va más allá del sabor: es un
-            ritual, un momento de pausa, una conexión con la tierra colombiana
-            que lo hace posible.
+            En <strong>Shaya Café</strong> trabajamos junto a mujeres del suroriente
+            de Boyacá que cultivan y procesan el café con conocimiento ancestral y un
+            compromiso real con la tierra.
           </p>
 
           <p className="mb-11 font-[var(--sans)] text-[15px] leading-[1.88] text-[#6B3F22]">
-            Seleccionamos granos en una de las mejores regiones cafeteras del
-            país, con tostión artesanal que respeta el perfil único de cada
-            variedad. Cada grano tiene una historia — nosotros te la contamos
-            en cada sorbo.
+            No es café genérico. Es café con historia, con origen claro y con personas
+            reales detrás de cada grano.
           </p>
 
           {/* Stats */}
