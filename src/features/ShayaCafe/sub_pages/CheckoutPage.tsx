@@ -5,13 +5,14 @@ import type { CartItem } from "../context/CartContext";
 import { formatCOP, unitPriceFor } from "../constants";
 
 // ─── Types ─────────────────────────────────────────────────────────
-type PayMethod = "efectivo" | "transferencia" | "nequi" | "daviplata" | "";
+type PayMethod = "efectivo" | "transferencia" | "nequi" |  "";
 
 interface FormData {
   name: string;
   phone: string;
-  address: string;
+  department: string;
   city: string;
+  address: string;
   paymentMethod: PayMethod;
   notes: string;
 }
@@ -119,8 +120,9 @@ const CheckoutPage: FC = () => {
   const [form, setForm] = useState<FormData>({
     name: "",
     phone: "",
-    address: "",
     city: "",
+    department: "",
+    address: "",
     paymentMethod: "",
     notes: "",
   });
@@ -141,6 +143,7 @@ const CheckoutPage: FC = () => {
       e.phone = "Teléfono inválido (solo números)";
     if (!form.address.trim()) e.address = "Ingresa tu dirección de entrega";
     if (!form.city.trim()) e.city = "Ingresa tu ciudad";
+    if (!form.department.trim()) e.department = "Ingresa tu departamento";
     if (!form.paymentMethod) e.paymentMethod = "Selecciona un método de pago";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -174,8 +177,9 @@ const CheckoutPage: FC = () => {
       "*Datos del cliente:*",
       `  • *Nombre*: ${form.name}`,
       `  • *Teléfono*: ${form.phone}`,
-      `  • *Dirección*: ${form.address}`,
       `  • *Ciudad*: ${form.city}`,
+      `  • *Departamento*: ${form.department}`,
+      `  • *Dirección*: ${form.address}`,
       `  • *Pago*: ${PAYMENT_LABELS[form.paymentMethod] ?? form.paymentMethod}`,
       ...(form.notes.trim() ? [`  • *Notas*: ${form.notes}`] : []),
     ];
@@ -262,7 +266,7 @@ const CheckoutPage: FC = () => {
             {step === 1 && (
               <div>
                 <h1 className="font-display text-[26px] font-bold text-[#271409] mb-6">
-                  Revisá tu pedido
+                  Revisa tu pedido
                 </h1>
 
                 <div className="flex flex-col gap-3 mb-6">
@@ -345,15 +349,15 @@ const CheckoutPage: FC = () => {
                     />
                   </Field>
 
-                  {/* Address */}
-                  <Field label="Dirección de entrega" required error={errors.address}>
+                  {/* Departamento */}
+                  <Field label="Departamento" required error={errors.department}>
                     <input
                       type="text"
-                      name="address"
-                      value={form.address}
+                      name="department"
+                      value={form.department}
                       onChange={handleChange}
-                      placeholder="Ej: Cra 15 #85-20, Apto 301"
-                      className={errors.address ? inputError : inputNormal}
+                      placeholder="Ej: Cundinamarca"
+                      className={errors.department ? inputError : inputNormal}
                     />
                   </Field>
 
@@ -368,6 +372,19 @@ const CheckoutPage: FC = () => {
                       className={errors.city ? inputError : inputNormal}
                     />
                   </Field>
+
+                  {/* Address */}
+                  <Field label="Dirección de entrega" required error={errors.address}>
+                    <input
+                      type="text"
+                      name="address"
+                      value={form.address}
+                      onChange={handleChange}
+                      placeholder="Ej: Cra 15 #85-20, Apto 301"
+                      className={errors.address ? inputError : inputNormal}
+                    />
+                  </Field>
+
 
                   {/* Payment */}
                   <Field label="Forma de pago" required error={errors.paymentMethod}>
