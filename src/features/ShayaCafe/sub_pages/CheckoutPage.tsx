@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import type { FC, ChangeEvent, FormEvent } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import type { CartItem } from "../context/CartContext";
+import { formatCOP, unitPriceFor } from "../constants";
 
 // ─── Types ─────────────────────────────────────────────────────────
 type PayMethod = "efectivo" | "transferencia" | "nequi" | "daviplata" | "";
@@ -23,10 +24,7 @@ const WA_NUMBER = "573138237896"; // Format: country code + number, no + or spac
 // ─── Helpers ───────────────────────────────────────────────────────
 // cart is parsed via useSearchParams inside the component
 
-const parsePrice = (price: string): number =>
-  parseInt(price.replace(/[^0-9]/g, ""), 10) || 0;
-
-const fmt = (n: number) => "$" + n.toLocaleString("es-CO");
+const fmt = (n: number) => formatCOP(n);
 
 // ─── Icons ─────────────────────────────────────────────────────────
 const CheckIcon = ({ className = "" }: { className?: string }) => (
@@ -54,20 +52,18 @@ const StepDot: FC<{ n: number; active: boolean; done: boolean; label: string }> 
 }) => (
   <div className="flex flex-col items-center gap-1.5">
     <div
-      className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors duration-300 ${
-        done
+      className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors duration-300 ${done
           ? "bg-[#5A8270] text-white"
           : active
-          ? "bg-[#C07B52] text-white"
-          : "bg-[#E8DDD0] text-[#8A7060]"
-      }`}
+            ? "bg-[#C07B52] text-white"
+            : "bg-[#E8DDD0] text-[#8A7060]"
+        }`}
     >
       {done ? <CheckIcon className="w-3.5 h-3.5" /> : n}
     </div>
     <span
-      className={`font-sans text-[10px] font-semibold tracking-[.06em] uppercase ${
-        active ? "text-[#271409]" : "text-[#8A7060]"
-      }`}
+      className={`font-sans text-[10px] font-semibold tracking-[.06em] uppercase ${active ? "text-[#271409]" : "text-[#8A7060]"
+        }`}
     >
       {label}
     </span>
@@ -95,14 +91,14 @@ const Field: FC<{
 const inputBase =
   "w-full font-sans text-sm text-[#271409] rounded-xl px-4 py-2.5 border outline-none transition-colors duration-200 bg-white placeholder:text-[#C5B8AC]";
 const inputNormal = `${inputBase} border-[#E8DDD0] focus:border-[#C07B52]`;
-const inputError  = `${inputBase} border-red-400 bg-red-50`;
+const inputError = `${inputBase} border-red-400 bg-red-50`;
 
 // ─── Payment methods ───────────────────────────────────────────────
 const PAYMENT_LABELS: Record<string, string> = {
-  efectivo:      "Efectivo",
+  efectivo: "Efectivo",
   transferencia: "Transferencia bancaria",
-  nequi:         "Nequi",
-  daviplata:     "Daviplata",
+  nequi: "Nequi",
+  daviplata: "Daviplata",
 };
 
 // ─── CheckoutPage ──────────────────────────────────────────────────
@@ -131,7 +127,8 @@ const CheckoutPage: FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
 
   const totalPrice = items.reduce(
-    (acc, i) => acc + parsePrice(i.product.price) * i.quantity,
+    (acc, i) =>
+      acc + unitPriceFor(i.product, i.weightGrams) * i.quantity,
     0
   );
   const totalCount = items.reduce((acc, i) => acc + i.quantity, 0);
@@ -139,12 +136,12 @@ const CheckoutPage: FC = () => {
   // ── Validation ─────────────────────────────────────────────────
   const validate = (): boolean => {
     const e: FormErrors = {};
-    if (!form.name.trim())                                        e.name = "Ingresa tu nombre completo";
+    if (!form.name.trim()) e.name = "Ingresa tu nombre completo";
     if (!form.phone.trim() || !/^\d{7,15}$/.test(form.phone.replace(/\s/g, "")))
-                                                                  e.phone = "Teléfono inválido (solo números)";
-    if (!form.address.trim())                                     e.address = "Ingresa tu dirección de entrega";
-    if (!form.city.trim())                                        e.city = "Ingresa tu ciudad";
-    if (!form.paymentMethod)                                      e.paymentMethod = "Selecciona un método de pago";
+      e.phone = "Teléfono inválido (solo números)";
+    if (!form.address.trim()) e.address = "Ingresa tu dirección de entrega";
+    if (!form.city.trim()) e.city = "Ingresa tu ciudad";
+    if (!form.paymentMethod) e.paymentMethod = "Selecciona un método de pago";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -165,10 +162,12 @@ const CheckoutPage: FC = () => {
       "*NUEVO PEDIDO — SHAYA CAFÉ*",
       "",
       "*Productos:*",
-      ...items.map(
-        (i) =>
-          `  • ${i.product.name} × *${i.quantity}*  (${i.product.weight}) — *${i.product.price}*`
-      ),
+      ...items.map((i) => {
+        const w =
+          i.weightGrams != null ? `${i.weightGrams} g` : i.product.weight;
+        const unit = unitPriceFor(i.product, i.weightGrams);
+        return `  • ${i.product.name} × *${i.quantity}* (${w}) — *${formatCOP(unit)} c/u*`;
+      }),
       "",
       `*Total:* ${fmt(totalPrice)}`,
       "",
@@ -217,12 +216,25 @@ const CheckoutPage: FC = () => {
       {/* ── Top bar ── */}
       <header className="sticky top-0 z-50 px-5 bg-[#F9F5EF]/96 backdrop-blur-xl border-b border-[#E8DDD0]">
         <div className="max-w-[900px] mx-auto h-14 flex items-center justify-between">
-          <button onClick={() => navigateBack("/")} className="bg-transparent border-0 cursor-pointer p-0">
-            <span className="font-display text-[18px] font-bold text-[#271409]">
-              SHAYA <span className="text-[#C07B52]">CAFÉ</span>
+          <button
+            onClick={() => navigateBack("/")}
+            className="bg-transparent border-0 cursor-pointer flex items-center gap-2.5 relative z-[501]"
+          >
+            <img
+              src="/logo_sin_fondo.ico"
+              alt="Shaya Café"
+              className={`h-10 sm:h-8 md:h-12 w-auto object-contain transition-all duration-[400ms] `}
+            />
+            <span
+              className={`text-[#402d0f] font-display italic text-2xl font-semibold transition-colors duration-[400ms] "
+            }`}
+            >
+              Shaya <span className="text-[#f3990d]">Café</span>
             </span>
           </button>
-          <span className="font-sans text-xs font-semibold tracking-[.08em] uppercase text-[#8A7060]">
+          <span 
+            onClick={() => navigateBack("/")}
+            className="hover:cursor-pointer font-sans text-xs font-semibold tracking-[.08em] uppercase text-[#8A7060]">
             Finalizar pedido
           </span>
         </div>
@@ -234,9 +246,8 @@ const CheckoutPage: FC = () => {
         <div className="flex items-center justify-center gap-4 mb-8 md:mb-10">
           <StepDot n={1} active={step === 1} done={step > 1} label="Tu pedido" />
           <div
-            className={`flex-1 max-w-[60px] h-0.5 rounded-full transition-colors duration-500 ${
-              step > 1 ? "bg-[#5A8270]" : "bg-[#E8DDD0]"
-            }`}
+            className={`flex-1 max-w-[60px] h-0.5 rounded-full transition-colors duration-500 ${step > 1 ? "bg-[#5A8270]" : "bg-[#E8DDD0]"
+              }`}
           />
           <StepDot n={2} active={step === 2} done={false} label="Tus datos" />
         </div>
@@ -255,9 +266,9 @@ const CheckoutPage: FC = () => {
                 </h1>
 
                 <div className="flex flex-col gap-3 mb-6">
-                  {items.map(({ product, quantity }) => (
+                  {items.map(({ product, quantity, weightGrams }) => (
                     <div
-                      key={product.id}
+                      key={`${product.id}-${weightGrams ?? "x"}`}
                       className="flex gap-4 rounded-2xl p-4 bg-white border border-[#E8DDD0]"
                     >
                       <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
@@ -268,10 +279,14 @@ const CheckoutPage: FC = () => {
                           {product.tagline}
                         </p>
                         <p className="font-display text-[15px] font-bold text-[#271409] truncate">{product.name}</p>
-                        <p className="font-sans text-xs text-[#8A7060] mt-0.5">{product.weight}</p>
+                        <p className="font-sans text-xs text-[#8A7060] mt-0.5">
+                          {weightGrams != null ? `${weightGrams} g` : product.weight}
+                        </p>
                       </div>
                       <div className="flex flex-col items-end justify-between flex-shrink-0">
-                        <span className="font-display text-base font-bold text-[#C07B52]">{product.price}</span>
+                        <span className="font-display text-base font-bold text-[#C07B52]">
+                          {formatCOP(unitPriceFor(product, weightGrams))}
+                        </span>
                         <span className="font-sans text-xs text-[#8A7060]">× {quantity}</span>
                       </div>
                     </div>
@@ -406,16 +421,22 @@ const CheckoutPage: FC = () => {
 
             {/* Item list */}
             <div className="flex flex-col gap-3 pb-4 border-b border-[#E8DDD0]">
-              {items.map(({ product, quantity }) => (
-                <div key={product.id} className="flex items-center justify-between gap-2">
+              {items.map(({ product, quantity, weightGrams }) => (
+                <div
+                  key={`${product.id}-${weightGrams ?? "x"}`}
+                  className="flex items-center justify-between gap-2"
+                >
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#C07B52] text-white font-sans text-[11px] font-bold flex-shrink-0">
                       {quantity}
                     </span>
-                    <span className="font-sans text-sm text-[#271409] truncate">{product.name}</span>
+                    <span className="font-sans text-sm text-[#271409] truncate">
+                      {product.name}
+                      {weightGrams != null ? ` · ${weightGrams} g` : ""}
+                    </span>
                   </div>
                   <span className="font-sans text-sm font-semibold text-[#271409] flex-shrink-0">
-                    {product.price}
+                    {formatCOP(unitPriceFor(product, weightGrams) * quantity)}
                   </span>
                 </div>
               ))}

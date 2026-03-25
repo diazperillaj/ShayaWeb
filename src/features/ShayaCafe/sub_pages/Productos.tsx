@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FC } from "react";
-import type { Product } from "../types";
-import { PRODUCTS } from "../constants";
+import type { CoffeeWeightGrams, Product } from "../types";
+import { PRODUCTS, WEIGHT_PRICES_CO, formatCOP, unitPriceFor } from "../constants";
 import { useReveal, useIsMobile } from "../hooks";
 import { useCart } from "../context/CartContext";
 
@@ -24,10 +24,15 @@ const CheckIcon = ({ className = "" }: { className?: string }) => (
 const ProductCard: FC<{ product: Product }> = ({ product }) => {
   const [hovered, setHovered] = useState(false);
   const [added, setAdded] = useState(false);
+  const [weight, setWeight] = useState<CoffeeWeightGrams>(500);
   const { addItem } = useCart();
 
+  const selectable = product.weightSelectable === true;
+  const displayWeight = selectable ? `${weight} g` : product.weight;
+  const displayPrice = formatCOP(unitPriceFor(product, selectable ? weight : undefined));
+
   const handleAdd = () => {
-    addItem(product);
+    addItem(product, selectable ? weight : undefined);
     setAdded(true);
     setTimeout(() => setAdded(false), 1400);
   };
@@ -64,7 +69,7 @@ const ProductCard: FC<{ product: Product }> = ({ product }) => {
 
         {/* Weight */}
         <span className="absolute top-3.5 right-3.5 bg-[#F9F5EF]/92 text-[#5A8270] text-[11px] font-bold tracking-[.08em] px-2.5 py-1 rounded-full font-sans backdrop-blur-[4px]">
-          {product.weight}
+          {displayWeight}
         </span>
       </div>
 
@@ -78,14 +83,39 @@ const ProductCard: FC<{ product: Product }> = ({ product }) => {
           {product.name}
         </h3>
 
+        {selectable && (
+          <div className="flex gap-2 mb-4">
+            {([250, 500] as const).map((g) => (
+              <button
+                key={g}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setWeight(g);
+                }}
+                className={`flex-1 font-sans text-[11px] font-bold tracking-[.06em] uppercase rounded-full py-2 border transition-colors duration-200 cursor-pointer ${
+                  weight === g
+                    ? "bg-[#c07b52] text-[#FEFCF9] border-[#c07b52]"
+                    : "bg-[#F3EDE4] text-[#8A7060] border-[#E8DDD0] hover:border-[#C07B52]"
+                }`}
+              >
+                {g} g · {formatCOP(WEIGHT_PRICES_CO[g])}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="flex items-center justify-between">
           <span className="font-display text-[27px] font-bold text-[#C07B52]">
-            {product.price}
+            {displayPrice}
           </span>
 
           {/* Add to cart button */}
           <button
-            onClick={handleAdd}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAdd();
+            }}
             aria-label={`Agregar ${product.name} al carrito`}
             className={`flex items-center gap-1.5 font-sans text-[12.5px] font-semibold tracking-[.05em] text-white border-0 rounded-full px-[22px] py-2.5 cursor-pointer transition-all duration-300 min-w-[130px] justify-center ${
               added

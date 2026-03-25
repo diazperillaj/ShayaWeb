@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import type { FC } from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { formatCOP, unitPriceFor } from "../constants";
 
 // ── Icon helpers ────────────────────────────────────────────────────
 const BagIcon = ({ className = "" }: { className?: string }) => (
@@ -113,9 +114,9 @@ const CartModal: FC = () => {
               </button>
             </div>
           ) : (
-            items.map(({ product, quantity }) => (
+            items.map(({ product, quantity, weightGrams }) => (
               <div
-                key={product.id}
+                key={`${product.id}-${weightGrams ?? "x"}`}
                 className="flex gap-3 rounded-2xl p-3 bg-white border border-[#E8DDD0]"
               >
                 {/* Thumbnail */}
@@ -128,15 +129,20 @@ const CartModal: FC = () => {
                   <p className="font-sans text-[9.5px] font-bold tracking-[.18em] uppercase text-[#5A8270] mb-0.5">
                     {product.tagline}
                   </p>
-                  <p className="font-display text-sm font-bold text-[#271409] truncate leading-tight mb-2">
+                  <p className="font-display text-sm font-bold text-[#271409] truncate leading-tight mb-0.5">
                     {product.name}
                   </p>
+                  {weightGrams != null && (
+                    <p className="font-sans text-[10px] text-[#8A7060] mb-2">
+                      {weightGrams} g
+                    </p>
+                  )}
 
                   <div className="flex items-center justify-between">
                     {/* Stepper */}
                     <div className="flex items-center gap-2 bg-[#F3EDE4] border border-[#E8DDD0] rounded-full px-1 py-0.5">
                       <button
-                        onClick={() => updateQty(product.id, -1)}
+                        onClick={() => updateQty(product.id, -1, weightGrams)}
                         aria-label="Reducir cantidad"
                         className={`flex items-center justify-center w-6 h-6 rounded-full border-0 cursor-pointer font-bold text-sm leading-none transition-colors duration-200 ${
                           quantity === 1
@@ -150,7 +156,7 @@ const CartModal: FC = () => {
                         {quantity}
                       </span>
                       <button
-                        onClick={() => updateQty(product.id, 1)}
+                        onClick={() => updateQty(product.id, 1, weightGrams)}
                         aria-label="Aumentar cantidad"
                         className="flex items-center justify-center w-6 h-6 rounded-full bg-[#C07B52] hover:bg-[#271409] text-white border-0 cursor-pointer font-bold text-sm leading-none transition-colors duration-200"
                       >
@@ -159,14 +165,14 @@ const CartModal: FC = () => {
                     </div>
 
                     <span className="font-display text-base font-bold text-[#C07B52]">
-                      {product.price}
+                      {formatCOP(unitPriceFor(product, weightGrams))}
                     </span>
                   </div>
                 </div>
 
                 {/* Remove */}
                 <button
-                  onClick={() => removeItem(product.id)}
+                  onClick={() => removeItem(product.id, weightGrams)}
                   aria-label="Eliminar producto"
                   className="self-start mt-0.5 flex items-center justify-center w-6 h-6 rounded-full bg-[#F3EDE4] hover:bg-red-50 hover:text-red-400 text-[#C07B52] border-0 cursor-pointer transition-colors duration-200 flex-shrink-0"
                 >

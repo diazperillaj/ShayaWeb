@@ -1,4 +1,30 @@
-import type { Product, NavItem } from "./types";
+import type { CoffeeWeightGrams, Product, NavItem } from "./types";
+
+/** Precios COP para café molido / grano por presentación. */
+export const WEIGHT_PRICES_CO: Record<CoffeeWeightGrams, number> = {
+  250: 20_000,
+  500: 40_000,
+};
+
+export const formatCOP = (n: number): string =>
+  "$" + n.toLocaleString("es-CO");
+
+export const parsePriceString = (price: string): number => {
+  const clean = price.replace(/[^0-9]/g, "");
+  return parseInt(clean, 10) || 0;
+};
+
+/** Precio unitario COP según producto y (si aplica) presentación en gramos. */
+export function unitPriceFor(
+  product: Product,
+  weightGrams?: CoffeeWeightGrams
+): number {
+  if (product.weightSelectable) {
+    const g = weightGrams ?? 500;
+    return WEIGHT_PRICES_CO[g];
+  }
+  return parsePriceString(product.price);
+}
 
 // ── Paleta
 // --cream   : #F9F5EF
@@ -25,6 +51,7 @@ export const PRODUCTS: Product[] = [
     badge: "Más vendido",
     imgA: "/Products/ground_front2.png",
     imgB: "/Products/ground_back2.png",
+    weightSelectable: true,
   },
   {
     id: 2,
@@ -35,6 +62,7 @@ export const PRODUCTS: Product[] = [
     badge: "Premium",
     imgA: "/Products/grain_front2.png",
     imgB: "/Products/grain_lateral2.png",
+    weightSelectable: true,
   },
   {
     id: 3,

@@ -32,7 +32,7 @@ const Nosotros: FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((c) => (c === FOTOS.length - 1 ? 0 : c + 1));
-    }, 3000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
@@ -98,10 +98,10 @@ const Nosotros: FC = () => {
 
           {/* Badge flotante */}
           <div className="about-badge absolute -bottom-5 -right-5 rounded-2xl bg-[#C07B52] px-6 py-[18px] shadow-[0_12px_38px_rgba(192,123,82,0.28)]">
-            <p className="font-[var(--display)] text-[34px] font-bold leading-none text-white">
+            <p className="text-[34px] font-bold leading-none text-white">
               100%
             </p>
-            <p className="mt-1 font-[var(--sans)] text-[10.5px] font-bold uppercase tracking-[0.15em] text-white/80">
+            <p className="mt-1 text-[10.5px] font-bold uppercase tracking-[0.15em] text-white/80">
               Origen colombiano
             </p>
           </div>
@@ -109,12 +109,12 @@ const Nosotros: FC = () => {
 
         {/* ── Texto ── */}
         <div className="flex-1">
-          <p className="mb-[14px] font-[var(--sans)] text-[10.5px] font-bold uppercase tracking-[0.3em] text-[#5A8270]">
+          <p className="mb-[14px] text-[10.5px] font-bold uppercase tracking-[0.3em] text-[#5A8270]">
             ✦ Quiénes somos
           </p>
 
           <h2
-            className="mb-[22px] font-[var(--display)] font-bold leading-[1.15] text-[#271409]"
+            className="mb-[22px]  font-bold leading-[1.15] text-[#271409]"
             style={{ fontSize: "clamp(1.8rem, 2.8vw, 2.7rem)" }}
           >
             Café con origen real,
@@ -141,10 +141,10 @@ const Nosotros: FC = () => {
               ["3", "Presentaciones"],
             ].map(([n, l]) => (
               <div key={l}>
-                <p className="font-[var(--display)] text-[32px] font-bold text-[#C07B52]">
+                <p className=" text-[32px] font-bold text-[#C07B52]">
                   {n}
                 </p>
-                <p className="mt-0.5 font-[var(--sans)] text-[11px] font-semibold uppercase tracking-[0.06em] text-[#B0A090]">
+                <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-[#B0A090]">
                   {l}
                 </p>
               </div>
