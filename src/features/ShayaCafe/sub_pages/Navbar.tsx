@@ -4,8 +4,8 @@ import Hamburger from "./MenuMobil";
 import { useCart } from "../context/CartContext";
 
 interface NavbarProps {
-  navShow: boolean;
-  atTop: boolean;
+  navShow?: boolean;
+  atTop?: boolean;
   menuOpen: boolean;
   navItems: NavItem[];
   onNavigate: (id: string) => void;
