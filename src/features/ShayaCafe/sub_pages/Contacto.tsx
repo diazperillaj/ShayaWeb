@@ -103,7 +103,7 @@ const Contacto: FC = () => {
 
         {/* Grid 2 × 1 en mobile, 2 × 2 en desktop */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[10px] md:gap-3 mb-[10px] md:mb-3">
-          <ContactCard href="https://wa.me/573138237896"   icon={<IconWA />}   dot="#25D366"     label="WhatsApp"           value="+57 313 823 7896" />
+          <ContactCard href="https://wa.me/573124639729"   icon={<IconWA />}   dot="#25D366"     label="WhatsApp"           value="+57 312 463 9729" />
           <ContactCard href="mailto:shayacafe@gmail.com"   icon={<IconMail />} dot="#C07B52"     label="Correo electrónico" value="shayacafe@gmail.com" />
         </div>
 

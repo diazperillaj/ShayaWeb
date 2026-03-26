@@ -20,7 +20,7 @@ interface FormData {
 type FormErrors = Partial<Record<keyof FormData, string>>;
 
 // ─── Config — change this to your real WhatsApp number ─────────────
-const WA_NUMBER = "573138237896"; // Format: country code + number, no + or spaces
+const WA_NUMBER = "573124639729"; // Format: country code + number, no + or spaces
 
 // ─── Helpers ───────────────────────────────────────────────────────
 // cart is parsed via useSearchParams inside the component
